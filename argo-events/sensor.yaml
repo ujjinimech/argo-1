@@ -6,14 +6,14 @@ spec:
   template:
     container:
       volumeMounts:
-        - mountPath: /git/sathyap0104
-          name: sathyap0104
+        - mountPath: /git/ujjinimech
+          name: ujjinimech
         - mountPath: /secret
           name: sshkey
         - mountPath: /etc/ssh
           name: known-hosts
     volumes:
-      - name: sathyap0104
+      - name: ujjinimech
         emptyDir: {}
       - name: sshkey
         secret:
