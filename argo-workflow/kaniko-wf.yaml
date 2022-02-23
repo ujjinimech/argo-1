@@ -26,9 +26,9 @@ spec:
         arguments:
           parameters:
           - name: app_repo
-            value: git://github.com/sathyap0104/nodejs-welcome.git
+            value: git://github.com/ujjinimech/nodejs-welcome.git
           - name: container_image
-            value: sathyap04/kaniko
+            value: ujjinimech/kaniko
           - name: container_tag
             value: "1.1.0"
 
