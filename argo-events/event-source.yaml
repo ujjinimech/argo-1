@@ -13,11 +13,12 @@ spec:
         - owner: ujjinimech
           names:
             - argo-1
+            - nodejs-welcome  
       webhook:
         endpoint: /nodejs-welcome
         port: "12000"
         method: POST
-        url: http://65.108.94.30
+        url: https://65.108.94.30:31326
       events:
         - "*"
       apiToken:    
