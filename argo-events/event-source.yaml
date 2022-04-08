@@ -18,7 +18,7 @@ spec:
         endpoint: /nodejs-welcome
         port: "12000"
         method: POST
-        url: https://65.108.94.30:31326
+        url: http://8.tcp.ngrok.io:15418
       events:
         - "*"
       apiToken:    

@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: container-image-
+  namespace: argo
+spec:
+  arguments:
+    parameters:
+    - name: app_repo
+      value: asdf
+    - name: container_image
+      value: asdf
+    - name: container_tag
+      value: asdf
+  entrypoint: build-kaniko-git
+  workflowTemplateRef:
+    clusterScope: true
+    name: container-image
+

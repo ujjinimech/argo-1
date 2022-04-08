@@ -1,0 +1,64 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: webhook
+spec:
+  template:
+    serviceAccountName: operate-workflow-sa
+  dependencies:
+    - name: test-dep
+      eventSourceName: github
+      eventName: nodejs-welcome
+  triggers:
+    - template:
+        name: templated-workflow-trigger
+        k8s:
+          group: argoproj.io
+          version: v1alpha1
+          resource: workflows
+          operation: create        
+          source:
+            resource:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Workflow
+              metadata:
+                generateName: container-image-
+                namespace: argo
+              spec:
+              
+                volumes:
+                  - name: kaniko-secret
+                    secret:
+                      secretName: regcred
+                      items:
+                        - key: .dockerconfigjson
+                          path: config.json 
+                arguments:
+                  parameters:
+                  - name: app_repo
+                    value: git://github.com/ujjinimech/nodejs-welcome.git
+                  - name: container_image
+                    value: ujjinimech/kani-new
+                  - name: container_tag
+                    value: v1
+                entrypoint: build-kaniko-git
+                workflowTemplateRef:
+                  clusterScope: true
+                  name: container-image
+          # parameters:
+          #   # Retrieve the 'message' key from the payload
+          #   - src:
+          #       dependencyName: test-dep
+          #       dataTemplate: "https://github.com/ujjinimech/nodejs-welcome.git"
+          #     dest: spec.arguments.parameters.0.value
+          #   # Title case the context subject
+          #   - src:
+          #       dependencyName: test-dep
+          #       dataTemplate: "ujjinimech/kani-new"
+          #     dest: spec.arguments.parameters.1.value
+          #   # Retrieve the 'name' key from the payload, remove all whitespace and lowercase it.
+          #   - src:
+          #       dependencyName: test-dep
+          #       dataTemplate: "v1"
+          #     dest: spec.arguments.parameters.2.value
+          #     operation: append

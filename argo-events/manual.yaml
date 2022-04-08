@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: container-image-
+spec:
+  arguments:
+    parameters:
+    - name: app_repo
+      value: https://github.com/ujjinimech/nodejs-welcome
+    - name: container_image
+      value: 'nodejs-welcome'
+    - name: container_tag
+      value: v1
+  entrypoint: build-kaniko-git
+  workflowTemplateRef:
+    clusterScope: true
+    name: container-image

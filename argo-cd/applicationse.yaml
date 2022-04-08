@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: nodejs-ujji
+  namespace: argocd
+spec:
+  generators:
+  - list:
+      elements:
+      - cluster: ujji
+        url: https://kubernetes.default.svc
+      - cluster: ujji-1
+        url: https://6.tcp.ngrok.io:15416       
+  template:
+    metadata:
+      name: '{{cluster}}-ezy-ujji'
+    spec:
+      destination:
+        namespace: default
+        server: '{{url}}'
+      project: default
+      source:
+        path: nodejs-new
+        repoURL: https://github.com/ujjinimech/nodejs-welcome.git
+        targetRevision: HEAD
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true
+
